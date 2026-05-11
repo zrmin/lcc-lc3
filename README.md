@@ -36,11 +36,7 @@ From the top-level directory type `configure`
 
 Now install the lcc/lc3 binaries by typing `make install`
 
-If everything goes well, the make process will create a directory off the
-top level called "install". It should contain the various binaries needed
-by the compiler, along with some informational files, such as this README
-file, a sample C file to compile, and a makefile for compiling that file.
-
+If everything goes well, the make process will install the compiler binaries (rcc, lcc, cpp, lc3pp) into `~/.lc3/`.
 
 ##How To Use
 
