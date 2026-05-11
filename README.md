@@ -51,7 +51,7 @@ compiler. Behind the scenes, the compiler will (1) compile the .c files
 into a set of pseudo-assembly .lcc files, (2) use the lc3pp (lc3 post
 processor) to link and massage the .lcc files and library files into a
 single .asm file, and (3) use Steve Lumetta's LC-3 assembler to assemble
-the .asm into a .obj file. This object file can then be loaded The file
+the .asm into a .obj file. This object file can then be loaded into the LC-3 simulator. The file
 topdir/test/regressions/Makefile provides an example of how the
 compilation process works.
 
