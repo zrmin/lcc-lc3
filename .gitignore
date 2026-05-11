@@ -29,5 +29,11 @@ CVS
 *.out
 
 # Makefile
-Makefile
+/Makefile
+/src/Makefile
+/etc/Makefile
+/cpp/Makefile
+/lc3pp/Makefile
+/lburg/Makefile
+/lib/Makefile
 

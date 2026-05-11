@@ -40,7 +40,7 @@ If everything goes well, the make process will install the compiler binaries (rc
 
 ##How To Use
 
-In the package there is a regressions and limitations test directiory in
+In the package there is a regression and limitations test directory in
 topdir/test/limitations and topdir/test/regression. The regression
 directory has a small set of files that have been tested to compile
 properly and have been assembled and simulated using Steve Lumetta's LC-3
@@ -52,7 +52,7 @@ into a set of pseudo-assembly .lcc files, (2) use the lc3pp (lc3 post
 processor) to link and massage the .lcc files and library files into a
 single .asm file, and (3) use Steve Lumetta's LC-3 assembler to assemble
 the .asm into a .obj file. This object file can then be loaded into the LC-3 simulator. The file
-topdir/test/regressions/Makefile provides an example of how the
+topdir/test/regression/Makefile provides an example of how the
 compilation process works.
 
 Note: not all C programs will compile to the LC-3. Programs with floating
