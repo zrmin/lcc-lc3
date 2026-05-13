@@ -5,7 +5,7 @@
 CODE = fig16.14
 
 # Directory with rcc, cpp, lcc
-#LCCDIR = ./
+LCCDIR = $(HOME)/.lc3
 
 # Directory with LC-3 library routines
 #LC3LIB = ../lc3lib
@@ -16,10 +16,9 @@ remake: clean all
 
 # C compiler (lcc) 
 $(CODE).obj: $(CODE).c 
-	lcc $(CODE).c -o $(CODE).obj
+	$(LCCDIR)/lcc $(CODE).c -o $(CODE).obj
 
 $(CODE).c:
 
 clean:
-	rm $(CODE).lcc $(CODE).asm $(CODE).obj $(CODE).sym
-
+	rm -f $(CODE).lcc $(CODE).asm $(CODE).obj $(CODE).sym
