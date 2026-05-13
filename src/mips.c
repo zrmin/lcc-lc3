@@ -54,8 +54,8 @@ static int pic;
 
 static int cseg;
 /*
-generated at Tue Mar  9 23:36:33 2004
-by $Id: mips.c,v 1.1.1.1 2004/03/24 04:37:34 sjp Exp $
+generated at Thu May 14 04:34:57 2026
+by $Id: lburg.c,v 1.1.1.1 2004/03/24 04:37:35 sjp Exp $
 */
 static void _kids(NODEPTR_TYPE, int, NODEPTR_TYPE[]);
 static void _label(NODEPTR_TYPE);
@@ -4287,4 +4287,4 @@ Interface mipsebIR = {
 
         }
 };
-static char rcsid[] = "$Id: mips.c,v 1.1.1.1 2004/03/24 04:37:34 sjp Exp $";
+static char rcsid[] = "$Id: mips.md,v 1.1.1.1 2004/03/24 04:37:33 sjp Exp $";

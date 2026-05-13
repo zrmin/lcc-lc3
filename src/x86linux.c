@@ -32,12 +32,12 @@ extern void stabsym(Symbol);
 extern void stabtype(Symbol);
 
 static int pflag = 0;
-static char rcsid[] = "$Id: x86linux.c,v 1.1.1.1 2004/03/24 04:37:34 sjp Exp $";
+static char rcsid[] = "$Id: x86linux.md,v 1.1.1.1 2004/03/24 04:37:34 sjp Exp $";
 
 #define hasargs(p) (p->syms[0] && p->syms[0]->u.c.v.i > 0 ? 0 : LBURG_MAX)
 /*
-generated at Tue Mar  9 23:36:37 2004
-by $Id: x86linux.c,v 1.1.1.1 2004/03/24 04:37:34 sjp Exp $
+generated at Thu May 14 04:34:58 2026
+by $Id: lburg.c,v 1.1.1.1 2004/03/24 04:37:35 sjp Exp $
 */
 static void _kids(NODEPTR_TYPE, int, NODEPTR_TYPE[]);
 static void _label(NODEPTR_TYPE);

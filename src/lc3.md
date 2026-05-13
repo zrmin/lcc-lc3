@@ -1212,7 +1212,7 @@ static void function(Symbol f, Symbol caller[], Symbol callee[], int ncalls) {
  *************************************************************/
 static void defconst(int suffix, int size, Value v) {
     if (suffix == P)
-        print("LC3_GFLAG .FILL x%x\n", (unsigned)v.p);
+        print("LC3_GFLAG .FILL x%x\n", (unsigned)(unsigned long)v.p);
     else
         print("LC3_GFLAG .FILL #%d\n", (unsigned)(suffix == I ? v.i : v.u));
 }

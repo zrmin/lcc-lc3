@@ -39,8 +39,8 @@ static int cseg;
 static Symbol quo, rem;
 
 /*
-generated at Tue Mar  9 23:36:36 2004
-by $Id: x86.c,v 1.1.1.1 2004/03/24 04:37:34 sjp Exp $
+generated at Thu May 14 04:34:58 2026
+by $Id: lburg.c,v 1.1.1.1 2004/03/24 04:37:35 sjp Exp $
 */
 static void _kids(NODEPTR_TYPE, int, NODEPTR_TYPE[]);
 static void _label(NODEPTR_TYPE);
@@ -5745,4 +5745,4 @@ Interface x86IR = {
             clobber,
 }
 };
-static char rcsid[] = "$Id: x86.c,v 1.1.1.1 2004/03/24 04:37:34 sjp Exp $";
+static char rcsid[] = "$Id: x86.md,v 1.1.1.1 2004/03/24 04:37:34 sjp Exp $";

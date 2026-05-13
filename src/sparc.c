@@ -56,8 +56,8 @@ static int pflag = 0;
 static int cseg;
 
 /*
-generated at Tue Mar  9 23:36:35 2004
-by $Id: sparc.c,v 1.1.1.1 2004/03/24 04:37:34 sjp Exp $
+generated at Thu May 14 04:34:57 2026
+by $Id: lburg.c,v 1.1.1.1 2004/03/24 04:37:35 sjp Exp $
 */
 static void _kids(NODEPTR_TYPE, int, NODEPTR_TYPE[]);
 static void _label(NODEPTR_TYPE);
@@ -5222,4 +5222,4 @@ Interface solarisIR = {
 
         }
 };
-static char rcsid[] = "$Id: sparc.c,v 1.1.1.1 2004/03/24 04:37:34 sjp Exp $";
+static char rcsid[] = "$Id: sparc.md,v 1.1.1.1 2004/03/24 04:37:33 sjp Exp $";
