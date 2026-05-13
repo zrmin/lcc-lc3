@@ -751,7 +751,8 @@ static List path2list(const char *path) {
 	if (strchr(path, ';'))
 		sep = ';';
 	while (*path) {
-		char *p, buf[512];
+		const char *p;
+		char buf[512];
 		if (p = strchr(path, sep)) {
 			assert(p - path < sizeof buf);
 			strncpy(buf, path, p - path);
