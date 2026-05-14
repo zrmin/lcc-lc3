@@ -539,8 +539,8 @@ static void progbeg(int argc, char *argv[]) {
 	lc3_add(5,5,5);//r5=x6000
 	lc3_addimm(5,6,0);//r5=xefff
 	print("LD R4, GLOBAL_DATA_POINTER\n");		//puts x3000 in r6
-	print("LD R7, GLOBAL_MAIN_POINTER\n");		//puts x3000 in r6
-	print("jsrr R7\n");
+	print("LD R0, GLOBAL_MAIN_POINTER\n");		//puts x3000 in r6
+	print("jsrr R0\n");
 	print("HALT\n\n");
 	print("GLOBAL_DATA_POINTER .FILL GLOBAL_DATA_START\n");
 	print("GLOBAL_MAIN_POINTER .FILL main\n");
