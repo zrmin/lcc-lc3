@@ -1,73 +1,93 @@
-LCC-LC3 C Compiler
-===================
+LCC-LC3 C Compiler (fmrt-port)
+===============================
 
-##Recent Changes
-####May 2012
+A port of Ladsaria & Patel's LCC-based C compiler for the LC-3 architecture,
+updated for modern 64-bit build hosts and C23 compilers.
 
-*Avery Yen*
+## Changes (fmrt-port branch)
 
-Modified Makefile.def and configure to automatically install to `~/.lc3`. Also, `make install` now only installs executables. This is because having documents like a Makefile and a README in your executable path is a Bad Idea. The Makefile, README, and other documents previously installed by `make install` already live in the source directory. There doesn't seem to be any reason to make them live in two places.
+### 64-bit Host Compatibility
 
-*Sean Smith (Dartmouth College), Stephen Canon*
+The original codebase targeted 32-bit hosts.  On 64-bit systems:
 
-Modified configure to compile on Mac OS X, especially Lion, but should be compatible with Leopard/Snow Leopard.
+- **Removed `-m32` and `-mno-sse` flags** from Makefiles — these are x86-specific
+  and break compilation on non-x86 or pure 64-bit environments.
 
-On Mac OS X Lion using Xcode 4.3, compiling with `/usr/bin/gcc` produces a binary lcc that crashes every time it is called. The fix is to use the `-mno-sse` flag when compiling `rcc`. Sean Smith reports that the issue appears to be with the MOVAPS instruction that gets compiled by `/usr/bin/gcc`, using the latest llvm-gcc compiler that comes with Xcode 4.3 on OS X Lion, which expects to copy aligned memory, but for some reason doesn't.
+- **Fixed `-Wpointer-to-int-cast` warnings** — `Value` union member `v.p`
+  (`void *`, 8 bytes) was cast directly to `unsigned` or `int` (4 bytes) in
+  five backend `defconst` functions (`lc3`, `x86`, `mips`, `sparc`, `x86linux`).
+  Inserted intermediate casts through `unsigned long` / `long` to match the
+  pointer width.  Applied to both the `.md` source templates and the
+  `lburg`-generated `.c` files.
 
-From Stephen Canon:
+- **Fixed ABI notes** (`the ABI of passing union with 'long double' has changed
+  in GCC 4.4`) — Changed `long double d` to `double d` in the `Value` union
+  (`src/c.h`) and the corresponding `va_arg` call (`src/enode.c`).  The
+  compiler only needs 64-bit precision for constant folding.
 
-> `/usr/bin/gcc` is a bit of a frankencompiler on Lion; it's actually an alias for `llvm-gcc-4.2`, which uses the front end of GCC-4.2 and the LLVM back end. I suspect that the GCC frontend is making an alignment assumption in its internal representation that would later get unwound by the GCC backend, but that never has a chance to happen...
+### C23 Compatibility
 
+- **Renamed `constexpr` → `const_expr`** (`src/c.h`, `src/simp.c`, `src/stmt.c`,
+  `src/init.c`) — `constexpr` is a reserved keyword in C23, causing a hard
+  compile error.  `const_expr` preserves the semantic meaning without conflicts.
 
-##Description Of Contents
+- **Fixed `-Wdiscarded-qualifiers`** — `strchr()` on a `const char *` returns
+  `char *`.  Declared receiving pointers as `const char *` in `etc/lcc.c`
+  and `cpp/getopt.c`.
 
-This is the preliminary distribution of LCC that supports the LC-3. This
-is the slightly modified version of Ladsaria and Patel's LCC for use at Dartmouth College. The copyright information is in the file CPYRIGHT. There is absolutely no warranty for this software. Complete installation information is in INSTALL. TODO contains a to-do list.
+### LC-3 Backend Bug Fixes
 
-##Installation Instructions
+- **JSRR R7 startup bug** (`src/lc3.md`) — `JSRR` on LC-3 is **write-then-read**:
+  it first saves `PC+1` (return address) into the destination register, *then*
+  reads that register for the jump target.  The startup code loaded `main`'s
+  address into R7 and did `JSRR R7`, causing the return address to overwrite
+  `main`'s address before the jump.  Fixed by loading `main` into R0 instead:
+  `JSRR R0` saves the return address in R7 and jumps to `main` correctly.
 
-First, you must install the [LC3 Tools](https://github.com/haplesshero13/lc3tools) to have `lc3as`.
+### Build System
 
-Download and unpack this source, either with `git clone git://github.com/haplesshero13/lc3tools.git` or by clicking on the ZIP download button at the top of this github page.
+- **Stopped tracking `lburg`-generated `.c` files** — `src/alpha.c`,
+  `dagcheck.c`, `lc3.c`, `mips.c`, `sparc.c`, `x86.c`, `x86linux.c` are
+  generated from `.md` templates and no longer committed to the repository.
+  Added to `.gitignore`.
 
-Change to the lcc directory with `cd lcc-1.3`
+## Description Of Contents
 
-From the top-level directory type `configure`
+This is a distribution of LCC that supports the LC-3.
+Copyright information is in `CPYRIGHT`.  There is absolutely no warranty
+for this software.  Installation information is in `INSTALL`.  `TODO`
+contains a to-do list.
 
-Now install the lcc/lc3 binaries by typing `make install`
+## Installation
 
-If everything goes well, the make process will install the compiler binaries (rcc, lcc, cpp, lc3pp) into `~/.lc3/`.
+```sh
+./configure
+make
+```
 
-##How To Use
+The compiler binaries (`rcc`, `lcc`, `cpp`, `lc3pp`) are built in-tree.
+You can run them directly or install with `make install`.
 
-In the package there is a regression and limitations test directory in
-topdir/test/limitations and topdir/test/regression. The regression
-directory has a small set of files that have been tested to compile
-properly and have been assembled and simulated using Steve Lumetta's LC-3
-simulator. Many of these examples are taken from the book by Patt and Patel.
+## How To Use
 
-Compiling programs using the compiler is similar to using a standard C
-compiler. Behind the scenes, the compiler will (1) compile the .c files
-into a set of pseudo-assembly .lcc files, (2) use the lc3pp (lc3 post
-processor) to link and massage the .lcc files and library files into a
-single .asm file, and (3) use Steve Lumetta's LC-3 assembler to assemble
-the .asm into a .obj file. This object file can then be loaded into the LC-3 simulator. The file
-topdir/test/regression/Makefile provides an example of how the
-compilation process works.
+Compiling is similar to a standard C compiler.  Behind the scenes:
 
-Note: not all C programs will compile to the LC-3. Programs with floating
-point types, for example will not currently compile. Also, certain
-complex integer expressions will not generate properly because of the
-limited LC-3 register set. See topdir/test/limitations for some examples
-that do not compile properly. I hope to reduce this set of exceptional
-cases over time.
+1. `.c` files are compiled to pseudo-assembly `.lcc` files
+2. `lc3pp` links the `.lcc` files and library files into a single `.asm` file
+3. The LC-3 assembler (`lc3as`) assembles the `.asm` into a `.obj` file
 
-##Maintainers and Contributors
-* Sean Smith
-* Stephen Canon
-* Avery Yen
+See `test/regression/Makefile` for an example.
 
-##Original Authors
+**Limitations:** Floating-point types are not supported.  Some complex integer
+expressions may not generate properly due to the limited LC-3 register set.
 
-* Ajay Ladsaria
-* Sanjay J. Patel (sjp@crhc.uiuc.edu)
+## Original Authors
+
+- Ajay Ladsaria
+- Sanjay J. Patel (sjp@crhc.uiuc.edu)
+
+## Previous Contributors
+
+- Sean Smith (Dartmouth College)
+- Stephen Canon (Mac OS X port)
+- Avery Yen (install path fixes)
